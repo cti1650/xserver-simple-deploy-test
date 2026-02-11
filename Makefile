@@ -12,8 +12,12 @@ EXCLUDES := \
 	--exclude 'wp-content/cache/' \
 	--exclude 'wp-content/debug.log'
 
-RSYNC_BASE := rsync -av \
+# Homebrew rsync を優先（macOS の openrsync はプロトコル互換性問題あり）
+RSYNC_CMD := $(shell command -v /opt/homebrew/bin/rsync 2>/dev/null || command -v /usr/local/bin/rsync 2>/dev/null || echo rsync)
+
+RSYNC_BASE := $(RSYNC_CMD) -av \
 	-e "ssh -p $$SSH_PORT" \
+	--rsync-path=/usr/bin/rsync \
 	$(EXCLUDES)
 
 # ==============================
