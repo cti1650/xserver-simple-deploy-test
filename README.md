@@ -92,17 +92,10 @@ make push
 | `DEPLOY_PATH` | /home/youruser/example.com/public_html |
 | `SSH_KEY` | 秘密鍵の内容（`cat ~/.ssh/id_ed25519`） |
 | `SLACK_WEBHOOK_URL` | Slack通知用Webhook URL（任意） |
+| `SERVICE_NAME` | Slack通知用サービス名（任意、例: My Website） |
+| `DEPLOY_URL` | Slack通知用デプロイ先URL（任意、例: https://example.com） |
 
 > **Slack Webhook取得方法**: [Slack App](https://api.slack.com/apps)を作成し、「Incoming Webhooks」からWebhook URLを取得してください。Slack Marketplace経由のLegacy Incoming Webhookは[将来廃止予定](https://api.slack.com/changelog/2024-09-legacy-custom-bots-classic-apps-deprecation)のため非推奨です。
-
-### Variables設定（任意）
-
-Slack通知にサービス名やURLを含める場合、Settings → Secrets and variables → Actions → Variables で登録:
-
-| Variable | 値 |
-|----------|-----|
-| `SERVICE_NAME` | サービス名（例: My Website） |
-| `DEPLOY_URL` | デプロイ先URL（例: https://example.com） |
 
 ### 手動実行
 
