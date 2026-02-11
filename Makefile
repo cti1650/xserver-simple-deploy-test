@@ -34,8 +34,10 @@ define load-env
 endef
 
 define confirm
-	@read -p "⚠️  $(1) 続行しますか？ [y/N]: " ans; \
-	if [ "$$ans" != "y" ]; then echo "Abort."; exit 1; fi
+	@if [ "$$CI" != "true" ]; then \
+		read -p "⚠️  $(1) 続行しますか？ [y/N]: " ans; \
+		if [ "$$ans" != "y" ]; then echo "Abort."; exit 1; fi; \
+	fi
 endef
 
 # ==============================
