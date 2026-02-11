@@ -25,10 +25,12 @@ RSYNC_BASE := $(RSYNC_CMD) -av \
 # ==============================
 .PHONY: env-check
 env-check:
-	@test -f $(ENV_FILE) || (echo ".env が存在しません"; exit 1)
+	@if [ -z "$$SSH_HOST" ] && [ ! -f $(ENV_FILE) ]; then \
+		echo ".env が存在しないか、環境変数が設定されていません"; exit 1; \
+	fi
 
 define load-env
-	set -a; . $(ENV_FILE); set +a;
+	if [ -f $(ENV_FILE) ]; then set -a; . $(ENV_FILE); set +a; fi;
 endef
 
 define confirm
