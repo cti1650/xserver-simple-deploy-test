@@ -53,6 +53,9 @@ help:
 	@echo "make dry-push   デプロイ内容の事前確認"
 	@echo "make push       ローカル → サーバー反映"
 	@echo "make pull       サーバー → ローカル取得"
+	@echo "make serve      ローカルサーバー起動"
+	@echo "make stop       ローカルサーバー停止"
+	@echo "make clean      Dockerリソース削除"
 	@echo ""
 
 # ==============================
@@ -92,3 +95,19 @@ pull: env-check
 	$(RSYNC_BASE) \
 	$$SSH_USER@$$SSH_HOST:$$DEPLOY_PATH/ \
 	$(SRC_DIR)/
+
+# ==============================
+# local server
+# ==============================
+.PHONY: serve
+serve:
+	docker compose up -d
+	@echo "http://localhost:8080"
+
+.PHONY: stop
+stop:
+	docker compose down
+
+.PHONY: clean
+clean:
+	docker compose down --rmi all --volumes --remove-orphans

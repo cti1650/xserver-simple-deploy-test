@@ -61,6 +61,9 @@ make check
 | `make dry-push` | デプロイ内容の事前確認 |
 | `make push` | ローカル → サーバー反映 |
 | `make pull` | サーバー → ローカル取得 |
+| `make serve` | ローカルサーバー起動 |
+| `make stop` | ローカルサーバー停止 |
+| `make clean` | Dockerリソース削除 |
 
 ### デプロイの流れ
 
@@ -105,18 +108,37 @@ Slack通知にサービス名やURLを含める場合、Settings → Secrets and
 
 Actions → Manual Deploy to XSERVER → Run workflow
 
+## ローカル開発
+
+Dockerを使ってローカルで動作確認できます。
+
+```bash
+# サーバー起動（http://localhost:8080）
+make serve
+
+# サーバー停止
+make stop
+
+# 完全削除（イメージ、ボリューム含む）
+make clean
+```
+
 ## ディレクトリ構成
 
 ```
 .
-├── .env.example    # 環境変数テンプレート
+├── .env.example      # 環境変数テンプレート
 ├── .github/
+│   ├── actions/
+│   │   └── xserver-deploy/
+│   │       └── action.yml
 │   └── workflows/
 │       ├── auto-deploy.yml
 │       └── manual-deploy.yml
-├── Makefile        # デプロイコマンド
+├── docker-compose.yml  # ローカル開発用
+├── Makefile          # デプロイコマンド
 ├── README.md
-└── src/            # デプロイ対象ディレクトリ
+└── src/              # デプロイ対象ディレクトリ
     └── index.html
 ```
 
