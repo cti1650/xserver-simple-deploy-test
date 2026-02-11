@@ -1,18 +1,11 @@
-name: Manual Deploy to XSERVER
+name: Auto Deploy to XSERVER
 
 on:
-  workflow_dispatch:
-    inputs:
-      action:
-        description: "Which make command to run"
-        required: true
-        default: "push"
-        type: choice
-        options:
-          - check
-          - diff
-          - dry-push
-          - push
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
 
 jobs:
   deploy:
@@ -25,7 +18,7 @@ jobs:
       - name: Deploy
         uses: ./.github/actions/xserver-deploy
         with:
-          action: ${{ github.event.inputs.action }}
+          action: push
           ssh_host: ${{ secrets.SSH_HOST }}
           ssh_port: ${{ secrets.SSH_PORT }}
           ssh_user: ${{ secrets.SSH_USER }}
