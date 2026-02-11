@@ -7,6 +7,8 @@ SRC_DIR := src
 EXCLUDES := \
 	--exclude '.git/' \
 	--exclude '.github/' \
+	--exclude '.env' \
+	--exclude '.htaccess' \
 	--exclude 'wp-config.php' \
 	--exclude 'wp-content/uploads/' \
 	--exclude 'wp-content/cache/' \

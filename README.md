@@ -126,10 +126,16 @@ Actions → Manual Deploy to XSERVER → Run workflow
 
 - `.git/`
 - `.github/`
+- `.env`
+- `.htaccess`
 - `wp-config.php`
 - `wp-content/uploads/`
 - `wp-content/cache/`
 - `wp-content/debug.log`
+
+## サーバー側の環境変数
+
+デプロイ時に`.env`と`.htaccess`は除外されるため、サーバー上の設定は上書きされません。
 
 ## 参考
 
