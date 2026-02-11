@@ -8,6 +8,8 @@ XSERVERへのシンプルなrsyncデプロイツール。
 - SSH鍵（Ed25519推奨）
 - XSERVERのSSH接続設定
 
+> **macOSユーザーへ**: 標準のopenrsync（v29）はXSERVERのrsync（v31）とプロトコル互換性がありません。`brew install rsync`でインストールし、Homebrew版が使われるようPATHを設定してください。
+
 ## セットアップ
 
 ### 1. SSH鍵の準備
@@ -94,6 +96,7 @@ Actions → Manual Deploy to XSERVER → Run workflow
 ├── .env.example    # 環境変数テンプレート
 ├── .github/
 │   └── workflows/
+│       ├── auto-deploy.yml
 │       └── manual-deploy.yml
 ├── Makefile        # デプロイコマンド
 ├── README.md
