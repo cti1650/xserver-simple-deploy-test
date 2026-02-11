@@ -21,6 +21,18 @@ inputs:
   deploy_path:
     description: "Remote deploy path"
     required: true
+  slack_webhook_url:
+    description: "Slack webhook URL (optional)"
+    required: false
+    default: ""
+  service_name:
+    description: "Service name for notification (optional)"
+    required: false
+    default: ""
+  deploy_url:
+    description: "Deployed site URL for notification (optional)"
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -66,3 +78,40 @@ runs:
       if: inputs.action == 'push' && steps.diff.outputs.has_diff == 'false'
       shell: bash
       run: echo "No changes to deploy. Skipping push."
+
+    - name: Notify Slack (success)
+      if: success() && inputs.slack_webhook_url != '' && inputs.action == 'push' && steps.diff.outputs.has_diff == 'true'
+      shell: bash
+      run: |
+        SERVICE="${{ inputs.service_name }}"
+        URL="${{ inputs.deploy_url }}"
+
+        if [ -n "$SERVICE" ] && [ -n "$URL" ]; then
+          MSG="✅ *${SERVICE}* へのデプロイが完了しました\n<${URL}|サイトを確認>"
+        elif [ -n "$SERVICE" ]; then
+          MSG="✅ *${SERVICE}* へのデプロイが完了しました"
+        elif [ -n "$URL" ]; then
+          MSG="✅ デプロイが完了しました\n<${URL}|サイトを確認>"
+        else
+          MSG="✅ デプロイが完了しました"
+        fi
+
+        curl -s -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"${MSG}\"}" \
+          "${{ inputs.slack_webhook_url }}"
+
+    - name: Notify Slack (failure)
+      if: failure() && inputs.slack_webhook_url != ''
+      shell: bash
+      run: |
+        SERVICE="${{ inputs.service_name }}"
+
+        if [ -n "$SERVICE" ]; then
+          MSG="❌ *${SERVICE}* のデプロイに失敗しました"
+        else
+          MSG="❌ デプロイに失敗しました"
+        fi
+
+        curl -s -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"${MSG}\"}" \
+          "${{ inputs.slack_webhook_url }}"

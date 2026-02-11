@@ -24,3 +24,6 @@ jobs:
           ssh_user: ${{ secrets.SSH_USER }}
           ssh_key: ${{ secrets.SSH_KEY }}
           deploy_path: ${{ secrets.DEPLOY_PATH }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          service_name: ${{ vars.SERVICE_NAME }}
+          deploy_url: ${{ vars.DEPLOY_URL }}

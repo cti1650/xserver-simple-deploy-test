@@ -15,17 +15,21 @@ XSERVERへのシンプルなrsyncデプロイツール。
 ### 1. SSH鍵の準備
 
 ```bash
-# 鍵がなければ作成
+# 鍵がなければ作成（パスフレーズは空のままEnter）
 ssh-keygen -t ed25519 -C "your-email@example.com"
 
 # 公開鍵を確認
 cat ~/.ssh/id_ed25519.pub
 ```
 
+> **注意**: GitHub Actionsで使用する場合、パスフレーズは設定しないでください。設定するとCI実行時に入力待ちで停止します。
+
 ### 2. XSERVERでSSH設定
 
 1. サーバーパネル → SSH設定 → ONにする
 2. 公開鍵登録 → `~/.ssh/id_ed25519.pub` の内容を登録
+
+> **GitHub Actions使用時**: SSH設定で「国外アクセス制限」をOFFにしてください。GitHub ActionsはGitHubのサーバー（国外）から実行されるため、制限がONだと接続できません。
 
 ### 3. 環境変数の設定
 
@@ -84,6 +88,18 @@ make push
 | `SSH_USER` | youruser |
 | `DEPLOY_PATH` | /home/youruser/example.com/public_html |
 | `SSH_KEY` | 秘密鍵の内容（`cat ~/.ssh/id_ed25519`） |
+| `SLACK_WEBHOOK_URL` | Slack通知用Webhook URL（任意） |
+
+> **Slack Webhook取得方法**: [Slack App](https://api.slack.com/apps)を作成し、「Incoming Webhooks」からWebhook URLを取得してください。Slack Marketplace経由のLegacy Incoming Webhookは[将来廃止予定](https://api.slack.com/changelog/2024-09-legacy-custom-bots-classic-apps-deprecation)のため非推奨です。
+
+### Variables設定（任意）
+
+Slack通知にサービス名やURLを含める場合、Settings → Secrets and variables → Actions → Variables で登録:
+
+| Variable | 値 |
+|----------|-----|
+| `SERVICE_NAME` | サービス名（例: My Website） |
+| `DEPLOY_URL` | デプロイ先URL（例: https://example.com） |
 
 ### 手動実行
 
@@ -114,3 +130,10 @@ Actions → Manual Deploy to XSERVER → Run workflow
 - `wp-content/uploads/`
 - `wp-content/cache/`
 - `wp-content/debug.log`
+
+## 参考
+
+- [GitHub ActionsでXServerに自動デプロイする - Qiita](https://qiita.com/ryotaro-fukushima/items/1dd00f318c521f9959f0)
+- [GitHub Actionsとrsyncでデプロイを自動化する - greencider](https://greencd.jp/tech/github-actions-rsync-deploy/)
+- [GitHub Actionsを使ってXServerなどレンタルサーバーに自動デプロイしよう - AndHA](https://and-ha.com/coding/github-action-deploy/)
+- [XサーバーとGitHub Actionsを組み合わせて「手動アップロード」から卒業する話 - みろベース](https://miro-base.com/blog/xserver-auto-deploy/)
