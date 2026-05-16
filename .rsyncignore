@@ -1,0 +1,14 @@
+# rsync で deploy 対象から除外するファイル / ディレクトリ
+# 書式: パス（src/ 配下を起点とする）。# はコメント、空行は無視。
+# 注: rsync のフィルタは .gitignore の "!" 再include とは互換性がないため
+#     .gitignore 共有はせず、deploy 用に独立管理する。
+
+.git/
+.github/
+.env
+# .env.*
+.htaccess
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/debug.log

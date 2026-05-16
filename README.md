@@ -128,16 +128,19 @@ make clean
 │   └── workflows/
 │       ├── auto-deploy.yml
 │       └── manual-deploy.yml
+├── .rsyncignore        # rsync 除外パターン
 ├── docker-compose.yml  # ローカル開発用
-├── Makefile          # デプロイコマンド
+├── Makefile            # デプロイコマンド
 ├── README.md
-└── src/              # デプロイ対象ディレクトリ
+└── src/                # デプロイ対象ディレクトリ
     └── index.html
 ```
 
 ## 除外ファイル
 
-以下はデプロイ対象外:
+デプロイ対象外のパスは [`.rsyncignore`](.rsyncignore) で管理します（`src/` を起点としたパス。`#` コメント・空行可）。
+
+デフォルトでは以下を除外しています:
 
 - `.git/`
 - `.github/`
@@ -147,6 +150,8 @@ make clean
 - `wp-content/uploads/`
 - `wp-content/cache/`
 - `wp-content/debug.log`
+
+> **`.gitignore` を流用しない理由**: rsync のフィルタは `.gitignore` の `!` 再include と互換性がなく、また `.htaccess` や `wp-config.php` のように "git では管理するが deploy には含めない" ファイルが多いため、独立管理にしています。
 
 ## サーバー側の環境変数
 

@@ -4,15 +4,7 @@
 ENV_FILE := .env
 SRC_DIR := src
 
-EXCLUDES := \
-	--exclude '.git/' \
-	--exclude '.github/' \
-	--exclude '.env' \
-	--exclude '.htaccess' \
-	--exclude 'wp-config.php' \
-	--exclude 'wp-content/uploads/' \
-	--exclude 'wp-content/cache/' \
-	--exclude 'wp-content/debug.log'
+EXCLUDES := --exclude-from=.rsyncignore
 
 # Homebrew rsync を優先（macOS の openrsync はプロトコル互換性問題あり）
 RSYNC_CMD := $(shell command -v /opt/homebrew/bin/rsync 2>/dev/null || command -v /usr/local/bin/rsync 2>/dev/null || echo rsync)
