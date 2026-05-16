@@ -6,7 +6,7 @@
 .git/
 .github/
 .env
-# .env.*
+.env.*
 .htaccess
 wp-config.php
 wp-content/uploads/
